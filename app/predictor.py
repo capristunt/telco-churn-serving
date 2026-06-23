@@ -1,11 +1,12 @@
-"""Logique de scoring : chargement du modèle et inférence pour un profil client.
+"""Scoring logic: model loading and inference for a single customer profile.
 
-Ce module est la seule pièce du V2 qui charge l'artefact .joblib. L'API (api.py)
-et l'UI (streamlit_app.py) l'appellent sans connaître les détails du modèle.
+This module is the only piece of the V2 codebase that loads the .joblib
+artifact. Both the API (api.py) and the UI (streamlit_app.py) call into it
+without knowing any of the model details.
 
-Le modèle est chargé une fois à l'import du module (singleton). Le seuil de
-décision et les bornes de quartiles sont des constantes figées, calculées sur
-train + valid lors de l'entraînement.
+The model is loaded once at module import (singleton). The decision threshold
+and quartile boundaries are frozen constants, computed on train + valid during
+training.
 """
 
 from pathlib import Path
@@ -16,16 +17,16 @@ import pandas as pd
 from sklearn.pipeline import Pipeline
 
 
-# Chemin vers l'artefact, relatif à la racine du repo
+# Path to the artifact, relative to the repo root
 MODEL_PATH = Path(__file__).resolve().parent.parent / "artifacts" / "finetuned.joblib"
 
-# Seuil de décision optimal (gain 105 * TP - 15 * FP), notebook 03 du V1
+# Optimal decision threshold (gain 105 * TP - 15 * FP), V1 notebook 03
 THRESHOLD = 0.141
 
-# Bornes de quartiles calculées sur train + valid (5626 clients) avec finetuned.joblib
+# Quartile boundaries computed on train + valid (5626 customers) with finetuned.joblib
 QUARTILE_BOUNDS = (0.040574, 0.197194, 0.395784)
 
-# Colonnes attendues par le modèle, dans cet ordre (cf. data_prep.FEATURES du V1)
+# Columns expected by the model, in this order (cf. data_prep.FEATURES in V1)
 FEATURES = [
     "tenure", "MonthlyCharges", "TotalCharges", "nb_services",
     "SeniorCitizen", "Partner", "Dependents", "MultipleLines", "InternetService",
@@ -35,7 +36,7 @@ FEATURES = [
 
 
 class Prediction(TypedDict):
-    """Résultat structuré du scoring d'un client."""
+    """Structured output of the scoring function."""
     proba_churn: float
     label_pred: int
     risk_segment: str
@@ -43,56 +44,56 @@ class Prediction(TypedDict):
 
 
 def _load_model(path: Path = MODEL_PATH) -> Pipeline:
-    """Charge l'artefact .joblib depuis le disque.
+    """Load the .joblib artifact from disk.
 
     Args:
-        path: Chemin vers le fichier .joblib.
+        path: Path to the .joblib file.
 
     Returns:
-        Pipeline scikit-learn fittée, prête à être appelée en predict_proba.
+        Fitted scikit-learn Pipeline, ready for predict_proba calls.
 
     Raises:
-        FileNotFoundError: Si l'artefact est introuvable.
+        FileNotFoundError: If the artifact cannot be found.
     """
     if not path.exists():
-        raise FileNotFoundError(f"Artefact introuvable : {path}")
+        raise FileNotFoundError(f"Artifact not found: {path}")
     return joblib.load(path)
 
 
 def _assign_segment(proba: float) -> str:
-    """Assigne un segment de risque à une proba selon les bornes figées.
+    """Assign a risk segment to a probability based on frozen quartile bounds.
 
     Args:
-        proba: Probabilité de churn dans [0, 1].
+        proba: Churn probability in [0, 1].
 
     Returns:
-        Label du segment, de "Q1 (bas)" à "Q4 (haut)".
+        Segment label, from "Q1 (low)" to "Q4 (high)".
     """
     q1, q2, q3 = QUARTILE_BOUNDS
     if proba < q1:
-        return "Q1 (bas)"
+        return "Q1 (low)"
     if proba < q2:
         return "Q2"
     if proba < q3:
         return "Q3"
-    return "Q4 (haut)"
+    return "Q4 (high)"
 
 
-# Singleton : modèle chargé une fois à l'import du module
+# Singleton: model loaded once at module import
 _MODEL: Pipeline = _load_model()
 
 
 def predict(profile: dict) -> Prediction:
-    """Score un profil client.
+    """Score a customer profile.
 
     Args:
-        profile: Dictionnaire avec les clés de FEATURES (validation faite en amont
-            par Pydantic dans schemas.py).
+        profile: Dictionary with the keys listed in FEATURES (validation is
+            performed upstream by Pydantic in schemas.py).
 
     Returns:
-        Prédiction structurée avec proba, label binaire, segment et seuil utilisé.
+        Structured prediction with proba, binary label, segment, and threshold.
     """
-    # Le modèle attend un DataFrame avec les colonnes nommées (ColumnTransformer)
+    # The model expects a DataFrame with named columns (ColumnTransformer)
     df = pd.DataFrame([profile], columns=FEATURES)
     proba = float(_MODEL.predict_proba(df)[0, 1])
     return Prediction(

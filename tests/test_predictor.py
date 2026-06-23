@@ -158,14 +158,14 @@ def test_high_risk_profile_classified_as_churn():
     """Archetypal high-risk profile must yield label=1 and segment Q4."""
     result = predict(HIGH_RISK_PROFILE)
     assert result["label_pred"] == 1
-    assert result["risk_segment"] == "Q4 (haut)"
+    assert result["risk_segment"] == "Q4 (high)"
 
 
 def test_low_risk_profile_classified_as_no_churn():
     """Archetypal low-risk profile must yield label=0 and segment Q1."""
     result = predict(LOW_RISK_PROFILE)
     assert result["label_pred"] == 0
-    assert result["risk_segment"] == "Q1 (bas)"
+    assert result["risk_segment"] == "Q1 (low)"
 
 
 def test_high_risk_proba_greater_than_low_risk():
@@ -224,17 +224,17 @@ def test_online_security_reduces_churn():
 @pytest.mark.parametrize(
     "proba, expected",
     [
-        (0.0, "Q1 (bas)"),
-        (0.039, "Q1 (bas)"),
+        (0.0, "Q1 (low)"),
+        (0.039, "Q1 (low)"),
         (0.041, "Q2"),
         (0.10, "Q2"),
         (0.196, "Q2"),
         (0.198, "Q3"),
         (0.30, "Q3"),
         (0.394, "Q3"),
-        (0.396, "Q4 (haut)"),
-        (0.80, "Q4 (haut)"),
-        (1.0, "Q4 (haut)"),
+        (0.396, "Q4 (high)"),
+        (0.80, "Q4 (high)"),
+        (1.0, "Q4 (high)"),
     ],
 )
 def test_assign_segment_boundaries(proba, expected):

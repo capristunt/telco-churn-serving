@@ -125,7 +125,7 @@ def test_prediction_response_accepts_valid_output():
     response = PredictionResponse(
         proba_churn=0.65,
         label_pred=1,
-        risk_segment="Q4 (haut)",
+        risk_segment="Q4 (high)",
         threshold=0.141,
     )
     assert response.label_pred == 1
@@ -137,7 +137,7 @@ def test_prediction_response_rejects_proba_out_of_range():
         PredictionResponse(
             proba_churn=1.5,
             label_pred=1,
-            risk_segment="Q4 (haut)",
+            risk_segment="Q4 (high)",
             threshold=0.141,
         )
 

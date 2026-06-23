@@ -90,7 +90,7 @@ def test_predict_high_risk_profile_via_http(client):
     assert response.status_code == 200
     body = response.json()
     assert body["label_pred"] == 1
-    assert body["risk_segment"] == "Q4 (haut)"
+    assert body["risk_segment"] == "Q4 (high)"
 
 
 # /predict: validation errors (422)
