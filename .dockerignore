@@ -1,0 +1,40 @@
+# Version control
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+
+# Tests (not needed in production image)
+tests/
+conftest.py
+
+# Project tooling and docs (kept on Git, not needed in image)
+README.md
+MODEL_CARD.md
+
+# UI (separate concern, not part of the API image)
+ui/
+
+# Local artifacts and logs
+*.log
+.env
+
+# Docker files (not needed inside the image)
+Dockerfile
+.dockerignore
