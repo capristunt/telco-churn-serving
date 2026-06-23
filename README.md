@@ -129,7 +129,7 @@ Scores one customer profile.
 
 ```json
 {
-  "proba_churn": 0.087,
+  "proba_churn": 0.116,
   "label_pred": 0,
   "risk_segment": "Q2",
   "threshold": 0.141
