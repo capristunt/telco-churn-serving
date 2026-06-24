@@ -144,3 +144,36 @@ def test_predict_rejects_get_method(client):
     """/predict only accepts POST, GET should return 405."""
     response = client.get("/predict")
     assert response.status_code == 405
+
+
+# /explain
+
+def test_explain_returns_200_on_valid_payload(client):
+    """A valid payload yields a 200 with predict + contributions fields."""
+    response = client.post("/explain", json=VALID_PAYLOAD)
+    assert response.status_code == 200
+    body = response.json()
+    assert set(body.keys()) == {
+        "proba_churn", "label_pred", "risk_segment", "threshold", "contributions"
+    }
+
+
+def test_explain_response_contains_ten_contributions(client):
+    """Top-K is fixed at 10 in the endpoint."""
+    response = client.post("/explain", json=VALID_PAYLOAD)
+    body = response.json()
+    assert len(body["contributions"]) == 10
+
+
+def test_explain_contribution_item_has_expected_keys(client):
+    """Each contribution item exposes the documented schema."""
+    response = client.post("/explain", json=VALID_PAYLOAD)
+    first = response.json()["contributions"][0]
+    expected_keys = {"feature", "display_name", "category", "value", "contribution", "direction"}
+    assert set(first.keys()) == expected_keys
+
+
+def test_explain_rejects_invalid_payload(client):
+    """Same validation as /predict: missing fields trigger 422."""
+    response = client.post("/explain", json={"tenure": 10})
+    assert response.status_code == 422

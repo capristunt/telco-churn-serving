@@ -49,3 +49,23 @@ class PredictionResponse(BaseModel):
     label_pred: Literal[0, 1]
     risk_segment: Literal["Q1 (low)", "Q2", "Q3", "Q4 (high)"]
     threshold: float
+
+class ContributionItem(BaseModel):
+    """Single feature contribution to the pre-calibration logit."""
+
+    feature: str = Field(..., description="Internal transformed feature name.")
+    display_name: str = Field(..., description="Human-readable label.")
+    category: str = Field(..., description="Original raw column name.")
+    value: float = Field(..., description="Standardized or one-hot value used by the model.")
+    contribution: float = Field(..., description="Signed contribution to the logit.")
+    direction: Literal["push", "retain"] = Field(
+        ..., description="'push' raises churn risk, 'retain' lowers it."
+    )
+
+
+class ExplainResponse(PredictionResponse):
+    """Prediction enriched with top feature contributions."""
+
+    contributions: list[ContributionItem] = Field(
+        ..., description="Top contributions, sorted by absolute magnitude descending."
+    )

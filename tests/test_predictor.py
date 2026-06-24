@@ -11,8 +11,10 @@ Three families of tests:
 import copy
 
 import pytest
+import pandas as pd
 
 from app.predictor import THRESHOLD, _assign_segment, predict
+from app.explainer import compute_contributions
 
 
 # Neutral reference profile, used as a baseline for monotonicity tests.
@@ -240,3 +242,31 @@ def test_online_security_reduces_churn():
 def test_assign_segment_boundaries(proba, expected):
     """Quartile boundaries, including values just below and above each bound."""
     assert _assign_segment(proba) == expected
+
+
+@pytest.fixture
+def base_profile_df() -> pd.DataFrame:
+    """Single-row DataFrame matching the explainer's expected input format."""
+    return pd.DataFrame([BASE_PROFILE])
+
+
+class TestExplainer:
+    """Tests for compute_contributions."""
+
+    def test_returns_top_k_items(self, base_profile_df):
+        """Asking for top_k=10 returns exactly 10 contributions."""
+        contribs = compute_contributions(base_profile_df, top_k=10)
+        assert len(contribs) == 10
+
+    def test_sorted_by_absolute_magnitude(self, base_profile_df):
+        """Contributions are sorted by |contribution| descending."""
+        contribs = compute_contributions(base_profile_df, top_k=10)
+        magnitudes = [abs(c.contribution) for c in contribs]
+        assert magnitudes == sorted(magnitudes, reverse=True)
+
+    def test_direction_matches_sign(self, base_profile_df):
+        """direction='push' iff contribution>0, 'retain' iff <=0."""
+        contribs = compute_contributions(base_profile_df, top_k=10)
+        for c in contribs:
+            expected = "push" if c.contribution > 0 else "retain"
+            assert c.direction == expected

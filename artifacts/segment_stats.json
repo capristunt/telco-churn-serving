@@ -1,0 +1,166 @@
+{
+  "Q4 (high)": {
+    "n_customers": 1940,
+    "churn_rate": 0.6118556701030928,
+    "numeric_means": {
+      "tenure": 12.777835051546392,
+      "MonthlyCharges": 78.68417525773195,
+      "TotalCharges": 1121.9800773195875,
+      "nb_services": 2.0551546391752575
+    },
+    "categorical_proportions": {
+      "Contract": {
+        "Month-to-month": 0.9969072164948454,
+        "One year": 0.003092783505154639
+      },
+      "InternetService": {
+        "Fiber optic": 0.8304123711340207,
+        "DSL": 0.1695876288659794
+      },
+      "PaymentMethod": {
+        "Electronic check": 0.7087628865979382,
+        "Mailed check": 0.1211340206185567,
+        "Bank transfer (automatic)": 0.08556701030927835,
+        "Credit card (automatic)": 0.08453608247422681
+      },
+      "OnlineSecurity": {
+        "No": 0.904639175257732,
+        "Yes": 0.09536082474226804
+      },
+      "TechSupport": {
+        "No": 0.8989690721649485,
+        "Yes": 0.10103092783505155
+      },
+      "PaperlessBilling": {
+        "Yes": 0.8283505154639176,
+        "No": 0.17164948453608248
+      }
+    }
+  },
+  "Q2": {
+    "n_customers": 1720,
+    "churn_rate": 0.10465116279069768,
+    "numeric_means": {
+      "tenure": 37.70406976744186,
+      "MonthlyCharges": 63.746395348837204,
+      "TotalCharges": 3028.2010755813953,
+      "nb_services": 2.8784883720930234
+    },
+    "categorical_proportions": {
+      "Contract": {
+        "One year": 0.4703488372093023,
+        "Month-to-month": 0.34069767441860466,
+        "Two year": 0.18895348837209303
+      },
+      "InternetService": {
+        "DSL": 0.36511627906976746,
+        "Fiber optic": 0.35930232558139535,
+        "No": 0.2755813953488372
+      },
+      "PaymentMethod": {
+        "Mailed check": 0.2802325581395349,
+        "Bank transfer (automatic)": 0.2761627906976744,
+        "Credit card (automatic)": 0.2627906976744186,
+        "Electronic check": 0.1808139534883721
+      },
+      "OnlineSecurity": {
+        "Yes": 0.3808139534883721,
+        "No": 0.3436046511627907,
+        "No internet service": 0.2755813953488372
+      },
+      "TechSupport": {
+        "Yes": 0.40174418604651163,
+        "No": 0.3226744186046512,
+        "No internet service": 0.2755813953488372
+      },
+      "PaperlessBilling": {
+        "Yes": 0.5098837209302326,
+        "No": 0.49011627906976746
+      }
+    }
+  },
+  "Q3": {
+    "n_customers": 1602,
+    "churn_rate": 0.28963795255930086,
+    "numeric_means": {
+      "tenure": 25.296504369538077,
+      "MonthlyCharges": 65.95708489388265,
+      "TotalCharges": 2125.394506866417,
+      "nb_services": 2.3433208489388266
+    },
+    "categorical_proportions": {
+      "Contract": {
+        "Month-to-month": 0.8339575530586767,
+        "One year": 0.1647940074906367,
+        "Two year": 0.0012484394506866417
+      },
+      "InternetService": {
+        "Fiber optic": 0.44132334581772786,
+        "DSL": 0.4288389513108614,
+        "No": 0.12983770287141075
+      },
+      "PaymentMethod": {
+        "Electronic check": 0.35580524344569286,
+        "Mailed check": 0.27153558052434457,
+        "Bank transfer (automatic)": 0.19288389513108614,
+        "Credit card (automatic)": 0.1797752808988764
+      },
+      "OnlineSecurity": {
+        "No": 0.6073657927590512,
+        "Yes": 0.26279650436953805,
+        "No internet service": 0.12983770287141075
+      },
+      "TechSupport": {
+        "No": 0.6129837702871411,
+        "Yes": 0.2571785268414482,
+        "No internet service": 0.12983770287141075
+      },
+      "PaperlessBilling": {
+        "Yes": 0.6429463171036205,
+        "No": 0.3570536828963795
+      }
+    }
+  },
+  "Q1 (low)": {
+    "n_customers": 1770,
+    "churn_rate": 0.021468926553672316,
+    "numeric_means": {
+      "tenure": 55.26836158192091,
+      "MonthlyCharges": 49.551779661016944,
+      "TotalCharges": 2975.220056497175,
+      "nb_services": 2.602824858757062
+    },
+    "categorical_proportions": {
+      "Contract": {
+        "Two year": 0.7672316384180791,
+        "One year": 0.22203389830508474,
+        "Month-to-month": 0.010734463276836158
+      },
+      "InternetService": {
+        "No": 0.47344632768361583,
+        "DSL": 0.43615819209039547,
+        "Fiber optic": 0.0903954802259887
+      },
+      "PaymentMethod": {
+        "Credit card (automatic)": 0.34858757062146895,
+        "Bank transfer (automatic)": 0.3344632768361582,
+        "Mailed check": 0.25536723163841807,
+        "Electronic check": 0.061581920903954805
+      },
+      "OnlineSecurity": {
+        "No internet service": 0.47344632768361583,
+        "Yes": 0.42598870056497173,
+        "No": 0.10056497175141244
+      },
+      "TechSupport": {
+        "No internet service": 0.47344632768361583,
+        "Yes": 0.4186440677966102,
+        "No": 0.10790960451977401
+      },
+      "PaperlessBilling": {
+        "No": 0.6305084745762712,
+        "Yes": 0.3694915254237288
+      }
+    }
+  }
+}
